@@ -1,0 +1,30 @@
+graph TD
+    A[Start] --> B[Search Craigslist]
+    B --> C[Select Search Results]
+    C --> D[Open Listing Details]
+    D --> E[Extract Car Information]
+    E --> F[Navigate to Reply Section]
+    F --> G[Extract Contact Information]
+    G --> H[Store in CRM]
+    H --> I[End]
+
+    subgraph "Search Process"
+    B --> B1[ALL Listings]
+    B --> B2[By Owner]
+    B --> B3[By Dealer]
+    end
+
+    subgraph "Listing Details"
+    E --> E1[Make/Model]
+    E --> E2[Year]
+    E --> E3[Color]
+    E --> E4[Drive Train]
+    E --> E5[Transmission]
+    E --> E6[Fuel Type]
+    E --> E7[Condition]
+    end
+
+    subgraph "Contact Info"
+    G --> G1[Email]
+    G --> G2[Phone Number]
+    end
