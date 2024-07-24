@@ -1,0 +1,19 @@
+graph TD
+    A[Start] --> B[Initialize FastAPI]
+    B --> C{Receive Search Request}
+    C --> D[Call perform_search function]
+    D --> E[Setup Chrome WebDriver]
+    E --> F[Construct Search URL]
+    F --> G[Navigate to URL]
+    G --> H{Wait for Results}
+    H -->|Timeout| I[Return Error]
+    H -->|Success| J[Extract Result Links]
+    J --> K[Use ThreadPoolExecutor]
+    K --> L{Process Results}
+    L -->|Success| M[Return Result Links]
+    L -->|No Results| N[Return 'No results found']
+    L -->|Error| O[Return Error Message]
+    M --> P[End]
+    N --> P
+    O --> P
+    I --> P
