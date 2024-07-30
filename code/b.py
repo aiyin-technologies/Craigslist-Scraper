@@ -1,5 +1,3 @@
-# main.py
-
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import List, Optional, Union
@@ -48,6 +46,10 @@ def get_driver(load_cookies=False):
     # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+
+    chrome_options.add_argument('--proxy-server=5.58.33.187:5678')
+
+
     chrome_options.add_experimental_option("prefs", {
         "profile.managed_default_content_settings.images": 2,
     })
@@ -147,7 +149,7 @@ async def perform_search(query: str, session_id: Optional[str] = None, seller_ty
                             driver.execute_script("arguments[0].click();", reply_button)
                             print(f"Successfully clicked reply button for result {index}")
 
-                            # await asyncio.sleep(15)
+                            await asyncio.sleep(15)
 
                             email_button = WebDriverWait(driver, 10).until(
                                 EC.element_to_be_clickable((By.CSS_SELECTOR, "div.reply-option-section.collapsed button"))

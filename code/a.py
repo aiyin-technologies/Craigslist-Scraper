@@ -12,14 +12,23 @@ import json
 
 def perform_search(query: str, seller_type: str = 'all', max_retries: int = 3):
     chrome_options = Options()
+
+    # chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    # chrome_options.add_experimental_option("useAutomationExtension", False)
+
     # chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_experimental_option("prefs", {
-        "profile.managed_default_content_settings.images": 2,
-    })
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    chrome_options.add_argument('log-level=3')  # Only show fatal errors
+    # chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--disable-dev-shm-usage")
+
+    # chrome_options.add_argument("--disable-javascript")
+    # chrome_options.add_argument('--proxy-server=116.203.28.43:80')
+
+    # chrome_options.add_experimental_option("prefs", {
+    #     "profile.managed_default_content_settings.images": 2,
+    # })
+    # chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # chrome_options.add_argument('log-level=3')  # Only show fatal errors
 
     results = []
 
@@ -37,7 +46,7 @@ def perform_search(query: str, seller_type: str = 'all', max_retries: int = 3):
         current_url = f"{url}#search=1~gallery~0~0"
         print("Processing page 1")
         driver.get(current_url)
-        
+        # time.sleep(60)
         try:
             result_links = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, "li.cl-search-result a.cl-app-anchor"))
@@ -80,6 +89,9 @@ def perform_search(query: str, seller_type: str = 'all', max_retries: int = 3):
                                 EC.element_to_be_clickable((By.CSS_SELECTOR, "div.reply-button-row button"))
                             )
                             driver.execute_script("arguments[0].click();", reply_button)
+
+                            time.sleep(30)
+
                             print(f"Successfully clicked reply button for result {index}")
 
                             email_button = WebDriverWait(driver, 10).until(
@@ -134,11 +146,11 @@ def perform_search(query: str, seller_type: str = 'all', max_retries: int = 3):
 
     return results
 
-# # Example usage
-# search_results = perform_search("needs transmission")
+# Example usage
+search_results = perform_search("needs engine")
 
-# # Write results to JSON file
-# with open('leads1.json', 'w') as json_file:
-#     json.dump(search_results, json_file, indent=4)
+# Write results to JSON file
+with open('leads1.json', 'w') as json_file:
+    json.dump(search_results, json_file, indent=4)
 
-# print(f"Results written")
+print(f"Results written")
